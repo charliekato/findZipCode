@@ -101,11 +101,15 @@ namespace findZipCode
             }
         }
 
+
+
         private void lbxCity_SelectedIndexChanged(object sender, EventArgs e)
         {
             String connectionString = magicWord + excelFile + magicTail;
+            const string others = "以下に掲載がない場合";
             this.lbxStreet.Items.Clear();
             city = Convert.ToString(lbxCity.SelectedItem);
+            this.lbxStreet.Items.Add(others);
             using (OleDbConnection conn = new OleDbConnection(connectionString))
             {
                 string query = "SELECT DISTINCT street from [zipcode$] where pref = \""+
@@ -117,6 +121,7 @@ namespace findZipCode
                     while (dr.Read())
                     {
                         street = Convert.ToString(dr["street"]);
+                        if (street != others)
                         this.lbxStreet.Items.Add(street);
                     }
                 }
